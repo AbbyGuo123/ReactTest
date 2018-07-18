@@ -4,7 +4,7 @@ import Counter from './Counter';
 export default class SumAllNum extends Component{
     constructor(props){
         super(props);
-        this.state = {sum: 0,size:4};
+        this.state = {sum: 0,size:4,listItems:[]};
         this.listItems = [];
     }
 
@@ -20,26 +20,32 @@ export default class SumAllNum extends Component{
     }
 
     generateListItem =()=>{
+        let arr=[];
         for(let i=0;i<this.state.size;i++){
-        this.listItems.push(<Counter addSumAllData={this.addSumAllData} cutSumAllData = {this.cutSumAllData}/>) ;
+
+        arr.push(<Counter key={i} addSumAllData={this.addSumAllData} cutSumAllData = {this.cutSumAllData}/>) ;
         }
+        this.state.listItems=arr
     }
 
     // listItems = [0,0,0].map((number) =>
     //     <Counter addSumAllData={this.addSumAllData} cutSumAllData = {this.cutSumAllData}/> 
     // );
 
-    chageSize=(event)=>{
+    changeSize=(event)=>{
+        
         this.state.size =event.target.value;
-        console.log(this.state.size);
+        this.generateListItem()
+        console.log(this.state);
+        this.setState(this.state);
+        console.log(this.state);
     }
 
     render(){
-        {this.generateListItem()}
         return (
             <div>
-                <input type='text'  onChange={this.chageSize}></input>
-                {this.listItems}
+                <input type='text' value={this.state.size} onChange={this.changeSize.bind(this)}></input>
+                {this.state.listItems.map(x=>x)}
                 <label>总和：{this.state.sum}</label>
             </div>
           );
